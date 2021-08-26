@@ -11,11 +11,11 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AccelerateInterpolator
 import android.widget.Toast
 import androidx.core.view.MotionEventCompat
-import com.bedu.clasekotlinavanzado.databinding.ActivityMainBinding
+import com.bedu.clasekotlinavanzado.databinding.ActivityMainAnimationsBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivityAnimations : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainAnimationsBinding
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
 
         // A través de binding ya no tenemos tenemos que declarar las variables
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainAnimationsBinding.inflate(layoutInflater)
         val view = binding.root //Con esto hacemos referencia al constraint layout
         setContentView(view)
 

@@ -8,15 +8,27 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ClaseKotlinAvanzado">
-        <activity android:name=".MainActivity"
-            android:exported="true" >
+        android:theme="@style/Theme.ClaseKotlinAvanzado"
+        android:exported="true">
+        <activity
+            android:name=".MainActivityAnimations"
+            >
+
+        </activity>
+        <activity android:name=".Transiciones.SharedTransitionedActivity" />
+        <activity android:name=".Transiciones.MainActivityTransitions"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Transiciones.ActivitiesTransitionActivity" />
+        <activity android:name=".Transiciones.NoSceneActivity" />
+        <activity android:name=".Transiciones.TransitionSetActivity" />
+        <activity android:name=".Transiciones.TransitionActivity" />
+        <activity android:name=".Transiciones.SharedTransitionActivity" />
     </application>
 
 </manifest>
