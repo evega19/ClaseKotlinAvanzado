@@ -1,16 +1,23 @@
 package com.bedu.clasekotlinavanzado
 
 import android.animation.*
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.MotionEvent.ACTION_DOWN
+import android.view.MotionEvent.ACTION_UP
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.AccelerateInterpolator
 import android.widget.Toast
+import androidx.core.view.MotionEventCompat
 import com.bedu.clasekotlinavanzado.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -26,6 +33,28 @@ class MainActivity : AppCompatActivity() {
         binding.btnTiny.setOnClickListener { shrink() }
         binding.btnStart.setOnClickListener { start() }
         binding.btnPivot.setOnClickListener { pivot() }
+
+        binding.root.setOnTouchListener { view, motionEvent ->
+
+            when(MotionEventCompat.getActionMasked(motionEvent)){
+                ACTION_DOWN -> {
+                    val x = motionEvent.x - binding.arwing.width/2
+                    val y = motionEvent.y - binding.arwing.height/2
+                    binding.arwing.animate().apply {
+                        x(x)
+                        y(y)
+                        duration = 500
+                        interpolator = AccelerateInterpolator()
+                        start()
+                    }
+                }
+                ACTION_UP -> {
+                    barrelRol()
+                }
+            }
+
+            true
+        }
 
     }
 
