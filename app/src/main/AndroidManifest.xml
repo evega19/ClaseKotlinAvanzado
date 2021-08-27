@@ -12,17 +12,18 @@
         android:exported="true">
         <activity
             android:name=".MainActivityAnimations"
+            android:exported="true"
             >
-
-        </activity>
-        <activity android:name=".Transiciones.SharedTransitionedActivity" />
-        <activity android:name=".Transiciones.MainActivityTransitions"
-            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Transiciones.SharedTransitionedActivity" />
+        <activity android:name=".Transiciones.MainActivityTransitions"
+            >
+
         </activity>
         <activity android:name=".Transiciones.ActivitiesTransitionActivity" />
         <activity android:name=".Transiciones.NoSceneActivity" />
