@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ClaseKotlinAvanzado</string>
+
+    <string name="choosen_planet">El planeta elegido se llama: </string>
 </resources>
