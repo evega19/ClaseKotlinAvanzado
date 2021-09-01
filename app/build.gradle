@@ -8,9 +8,7 @@ android {
     buildToolsVersion "30.0.3"
 
 //    Cada layout va a crear una clase viewBinding para evitar al llamar las variables de la forma findById<>
-    buildFeatures{
-        viewBinding true
-    }
+    buildFeatures.viewBinding = true
 
     defaultConfig {
         applicationId "com.bedu.clasekotlinavanzado"
@@ -49,4 +47,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+
+    //Implementaci[on de cámara x
+    implementation "androidx.camera:camera-core:1.0.0-alpha06"
+    implementation "androidx.camera:camera-camera2:1.0.0-alpha06"
 }

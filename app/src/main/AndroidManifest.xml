@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bedu.clasekotlinavanzado">
+    <!-- Varía la exactitud con coarse, su variación es por KM y fine sirve para tener una variación por m -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- Con estos permisos activamos la cámara -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-<!--    Varía la exactitud con coarse, su variación es por KM y fine sirve para tener una variación por m-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
@@ -13,15 +17,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ClaseKotlinAvanzado">
-        <activity android:name=".ActivityLocation"
-            android:exported="true"
-            >
+        <activity android:name=".camara.ActivityCameraActive"></activity>
+        <activity
+            android:name=".camara.ActivityCamera"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ActivityLocation"
+            android:exported="true"></activity>
     </application>
 
 </manifest>
