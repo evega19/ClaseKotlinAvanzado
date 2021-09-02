@@ -7,6 +7,9 @@ android {
     compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
+//    Cada layout va a crear una clase viewBinding para evitar al llamar las variables de la forma findById<>
+    buildFeatures.viewBinding = true
+
     defaultConfig {
         applicationId "com.bedu.clasekotlinavanzado"
         minSdkVersion 21
