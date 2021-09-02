@@ -21,20 +21,27 @@ class ActivityCamera : AppCompatActivity() {
         binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        checkPermissionActiveCamera()
+
         binding.btnOpenCamera.setOnClickListener {
-            if(checkCameraPermission()){
-                //Si tienes permisos abre camara
-                openCamera()
-            }else{
-                //Si no, solicitalos
-                requestPermission()
-            }
+            checkPermissionActiveCamera()
+        }
+    }
+
+    private fun checkPermissionActiveCamera(){
+        if(checkCameraPermission()){
+            //Si tienes permisos abre camara
+            openCamera()
+        }else{
+            //Si no, solicitalos
+            requestPermission()
         }
     }
 
     private fun openCamera(){
         val intent = Intent(this, ActivityCameraActive::class.java)
         startActivity(intent)
+        finish()
     }
 
     private fun checkCameraPermission():Boolean{
