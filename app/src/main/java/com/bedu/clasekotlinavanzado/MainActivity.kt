@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity() {
 
     private val recieverTwo = ReceiverTwo()
 
+    private val airplaneReciever = AirplaneReceiver()
+
     companion object{
         const val KEYNAME ="NAME"
         const val KEYEMAIL = "EMAIL"
@@ -29,11 +31,23 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        registerAirplane()
 
         binding.button.setOnClickListener {
             emit2()
         }
 
+    }
+
+    private fun registerAirplane() {
+        IntentFilter().apply {
+            addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+        }.also { filter -> registerReceiver(airplaneReciever,filter) }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(airplaneReciever)
     }
 
     private fun emit(){
