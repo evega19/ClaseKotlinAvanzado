@@ -1,6 +1,7 @@
 package com.bedu.clasekotlinavanzado
 
 import android.content.Intent
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bedu.clasekotlinavanzado.databinding.ActivityMainBinding
@@ -15,9 +16,14 @@ class MainActivity : AppCompatActivity() {
 
     //Broadcast Receivers es como si sintonizara una radio y cuando este lo recibe lo escucha
 
+    private val recieverTwo = ReceiverTwo()
+
     companion object{
         const val KEYNAME ="NAME"
         const val KEYEMAIL = "EMAIL"
+
+        //Hay muchas apps enviando señales
+        const val ACTION_NAME = "org.debu.actions.SALUDO"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.button.setOnClickListener {
-            emit()
+            emit2()
         }
 
     }
@@ -54,6 +60,33 @@ class MainActivity : AppCompatActivity() {
         //Hay varias llaves que usa android para dar funciones a todos
         Intent("org.debu.actions.SALUDO").apply { putExtras(bundle)}.let(::sendBroadcast)
         */
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        IntentFilter().apply {
+            addAction(ACTION_NAME)
+        }.also { filter -> registerReceiver(recieverTwo,filter) }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        //Vamos a quitar el registro
+        unregisterReceiver(recieverTwo)
+    }
+
+    private fun emit2(){
+
+        val bundle = Bundle().apply {
+            putString(KEYNAME,"Pedro")
+            putString(KEYEMAIL,"pedro@bedu.org")
+        }
+
+        Intent(ACTION_NAME).apply {
+            putExtras(bundle)
+        }.let(::sendBroadcast)
+
 
     }
 }
