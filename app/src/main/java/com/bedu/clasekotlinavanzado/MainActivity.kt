@@ -1,6 +1,5 @@
 package com.bedu.clasekotlinavanzado
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -9,10 +8,12 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.bedu.clasekotlinavanzado.databinding.ActivityMainBinding
 
 
@@ -36,6 +37,9 @@ class MainActivity : AppCompatActivity() {
 
         //el nombre de la acción a ejecutar por el botón en la notificación
         const val ACTION_RECEIVED = "action_received"
+
+        //Es para crear grupos
+        val GRUPO_SIMPLE = "GRUPO_SIMPLE"
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -56,6 +60,9 @@ class MainActivity : AppCompatActivity() {
             true}
             btnActionNotify.setOnClickListener { touchNotification() }
             btnNotifyWithBtn.setOnClickListener { actionNotification() }
+            btnExpandable.setOnClickListener { expandableNotification() }
+            btnCustom.setOnClickListener { custonNotification()  }
+            btnCancelNoti.setOnClickListener { cancelNotification() }
         }
     }
 
@@ -92,9 +99,37 @@ class MainActivity : AppCompatActivity() {
             .setContentText(getString(R.string.simple_body))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
+
+        var notification2 = NotificationCompat.Builder(this, CHANNEL_DIVERSES)
+            .setSmallIcon(R.drawable.ic_launcher_foreground) //seteamos el ícono de la push notification
+            .setColor(ContextCompat.getColor(this,R.color.triforce)) //definimos el color del ícono y el título de la notificación
+            .setContentTitle(getString(R.string.simple_title_2)) //seteamos el título de la notificación
+            .setContentText(getString(R.string.simple_body_2)) //seteamos el cuerpo de la notificación
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT) //Ponemos una prioridad por defecto
+            .setGroup(GRUPO_SIMPLE)
+            .build()
+
+        var notification3 = NotificationCompat.Builder(this, CHANNEL_DIVERSES)
+            .setSmallIcon(R.drawable.ic_launcher_foreground) //seteamos el ícono de la push notification
+            .setColor(ContextCompat.getColor(this,R.color.triforce)) //definimos el color del ícono y el título de la notificación
+            .setContentTitle(getString(R.string.simple_title_3)) //seteamos el título de la notificación
+            .setContentText(getString(R.string.simple_body_3)) //seteamos el cuerpo de la notificación
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT) //Ponemos una prioridad por defecto
+            .setGroup(GRUPO_SIMPLE)
+            .build()
+
+        val summaryNotification = NotificationCompat.Builder(this@MainActivity, CHANNEL_DIVERSES)
+            .setSmallIcon(R.drawable.ic_launcher_background)
+            .setGroup(GRUPO_SIMPLE)
+            .setGroupSummary(true)
+            .build()
+
         //Ya tenemos la notificación pero hay que registrarla
         NotificationManagerCompat.from(this).run {
-            notify(++NOTIFICATION_ID,notification)
+            notify(20, notification)
+            notify(21, notification2)
+            notify(22, notification3)
+            notify(23, summaryNotification)
         }
     }
 
@@ -179,5 +214,46 @@ class MainActivity : AppCompatActivity() {
             notify(++NOTIFICATION_ID,notification)
         }
     }
+
+    private fun expandableNotification() {
+
+        val notification = NotificationCompat.Builder(this, CHANNEL_COURSES)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setColor(ContextCompat.getColor(this,R.color.triforce))
+            .setContentTitle(getString(R.string.simple_title))
+            .setContentText(getString(R.string.large_text))
+            .setLargeIcon(getDrawable(R.drawable.ic_launcher_foreground)?.toBitmap())//ícono grande a la derecha
+            .setStyle(NotificationCompat.BigTextStyle()//este estilo define al expandible
+                .bigText(getString(R.string.large_text))) //Cuerpo de la notificación cuando se expande
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .build()
+
+        NotificationManagerCompat.from(this).run {
+            notify(42,notification)
+        }
+    }
+
+    private fun custonNotification() {
+        val notificationLayout = RemoteViews(packageName,R.layout.notification_custon)
+        val notificationLayoutExpanded = RemoteViews(packageName,R.layout.notification_custon_expanded)
+
+        val notification = NotificationCompat.Builder(this, CHANNEL_DIVERSES)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+            .setCustomContentView(notificationLayout)
+            .setCustomBigContentView(notificationLayoutExpanded)
+            .build()
+
+        NotificationManagerCompat.from(this).run{
+            notify(50,notification)
+        }
+    }
+
+    private fun cancelNotification() {
+        with(NotificationManagerCompat.from(this)) {
+            cancelAll()
+        }
+    }
+
 
 }
