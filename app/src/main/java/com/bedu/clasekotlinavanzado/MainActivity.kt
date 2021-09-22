@@ -25,8 +25,14 @@ class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy{ ActivityMainBinding.inflate(layoutInflater) }
 
     companion object{
+
+        var NOTIFICATION_ID=0
+
         //el nombre de la acción a ejecutar por el botón en la notificación
         const val CHANNEL_COURSES = "channel_courses"
+
+        //el nombre de la acción a ejecutar por el botón en la notificación
+        const val CHANNEL_DIVERSES = "channel_diverses"
 
         //el nombre de la acción a ejecutar por el botón en la notificación
         const val ACTION_RECEIVED = "action_received"
@@ -40,11 +46,14 @@ class MainActivity : AppCompatActivity() {
         //Para android Oreo en adelante, es obligatorio registrar el canal de notificación
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             setNotificationChannel()
+            setNotificationChannelDiversos()
         }
 
         binding.run{
             //Aqu[i colocamos nuestros listeners
             btnNotify.setOnClickListener { simpleNotification() }
+            btnNotify.setOnLongClickListener { touchAndActionNotification()
+            true}
             btnActionNotify.setOnClickListener { touchNotification() }
             btnNotifyWithBtn.setOnClickListener { actionNotification() }
         }
@@ -59,9 +68,19 @@ class MainActivity : AppCompatActivity() {
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channel = NotificationChannel(CHANNEL_COURSES,name,importance).apply { description = descriptionText }
         val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
         notificationManager.createNotificationChannel(channel)
 
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setNotificationChannelDiversos(){
+        //Nombre con el cual va a aparecer la notificación
+        val name = getString(R.string.channel_diverse)
+        val descriptionText = getString(R.string.courses_diverse_description)
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(CHANNEL_DIVERSES,name,importance).apply { description = descriptionText }
+        val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 
     private fun simpleNotification(){
@@ -75,7 +94,7 @@ class MainActivity : AppCompatActivity() {
             .build()
         //Ya tenemos la notificación pero hay que registrarla
         NotificationManagerCompat.from(this).run {
-            notify(20,notification)
+            notify(++NOTIFICATION_ID,notification)
         }
     }
 
@@ -99,7 +118,7 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         NotificationManagerCompat.from(this).run {
-            notify(20,notification)
+            notify(++NOTIFICATION_ID,notification)
         }
     }
 
@@ -123,9 +142,42 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         NotificationManagerCompat.from(this).run {
-            notify(20,notification)
+            notify(++NOTIFICATION_ID,notification)
         }
 
+    }
+
+    private fun touchAndActionNotification(){
+
+        val intent = Intent(this, Act2_ReturnFormNotification::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+
+        //Similar al anterior, definimos un intent comunicándose con NotificationReceiver
+        val acceptIntent = Intent(this, NotificationReceiver::class.java).apply {
+            action = ACTION_RECEIVED
+        }
+
+        //Haremos un intent que se pueda ejecutar desde otra aplicación
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+
+        //creamos un PendingIntent que describe el pending anterior
+        val acceptPendingIntent: PendingIntent = PendingIntent.getBroadcast(this, 0, acceptIntent, 0)
+
+        val notification = NotificationCompat.Builder(this, CHANNEL_COURSES)
+            .setSmallIcon(R.drawable.ic_launcher_background)
+            .setColor(ContextCompat.getColor(this, R.color.teal_700))
+            .setContentTitle(getString(R.string.action_title))
+            .setContentText(getString(R.string.action_body))
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)//Establecemos el intent
+            .setAutoCancel(true)//Borramos la notificación al momento de entrar al intent
+            .addAction(R.drawable.ic_launcher_foreground, getString(R.string.button_text),acceptPendingIntent)//Establecemos el intent
+            .build()
+
+        NotificationManagerCompat.from(this).run {
+            notify(++NOTIFICATION_ID,notification)
+        }
     }
 
 }

@@ -21,5 +21,7 @@
     <!-- CANAL CURSOS -->
     <string name="channel_courses">cursos</string>
     <string name="courses_description">Notificaciones acerca de cursos impartidos</string>
+    <string name="channel_diverse">Diversos</string>
+    <string name="courses_diverse_description">Notificaciones acerca de cursos impartidos</string>
 
 </resources>
