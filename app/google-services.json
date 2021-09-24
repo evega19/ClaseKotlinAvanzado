@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "757788339680",
+    "project_id": "bonappetit-52a78",
+    "storage_bucket": "bonappetit-52a78.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757788339680:android:bf9f4e00feafc23e580f85",
+        "android_client_info": {
+          "package_name": "com.bedu.clasekotlinavanzado"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "757788339680-qk9acoobrmvbtft56edf0q3uejkdf6if.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9QkTLJhjoeAvGHtGa71_qfYiYCk5NKFk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "757788339680-qk9acoobrmvbtft56edf0q3uejkdf6if.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

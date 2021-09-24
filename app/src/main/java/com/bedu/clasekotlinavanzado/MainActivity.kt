@@ -8,13 +8,18 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.RemoteViews
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.bedu.clasekotlinavanzado.databinding.ActivityMainBinding
+import com.google.android.gms.tasks.OnCompleteListener
+
+import com.google.firebase.messaging.FirebaseMessaging
 
 
 //Notificaciones Ejemplo 1: https://github.com/beduExpert/Kotlin-Avanzado-Santander-2021/blob/main/Sesion-06/Ejemplo-01/Readme.md
@@ -53,6 +58,8 @@ class MainActivity : AppCompatActivity() {
             setNotificationChannelDiversos()
         }
 
+        getFCMtoFirebase()
+
         binding.run{
             //Aqu[i colocamos nuestros listeners
             btnNotify.setOnClickListener { simpleNotification() }
@@ -64,6 +71,18 @@ class MainActivity : AppCompatActivity() {
             btnCustom.setOnClickListener { custonNotification()  }
             btnCancelNoti.setOnClickListener { cancelNotification() }
         }
+    }
+
+    private fun getFCMtoFirebase(){
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.e("Error", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+            val token = task.result
+            Log.e("FCM_TOKEN", token.toString())
+            Toast.makeText(baseContext,"FCM token: $token", Toast.LENGTH_SHORT).show()
+        })
     }
 
     //Nos pide que sea el API Oreo para funcionar el NotificationChannel
